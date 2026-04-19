@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>W2Watch</title>
+        <link rel="stylesheet" href="./src/index.css">
+    </head>
+    <body>
+        <header>
+            <h1>W2Watch</h1>
+        </header>
+        <main>
+            <form id="form1">
+                <input type="number" name="number" id="number" placeholder="How many people?" aria-label="type how many people are watching the movie" max="8" value ="1">
+                <input type="text" name="hour" id="hour" placeholder="How much time do you have?" maxlength="20" aria-label="type how much time do you have to watch the movie">
+                <button type="submit" id="start">Start</button>
+            </form>
+            <form id="form2" class="hidden">
+                <h2 id="person-number"></h2>
+                <label for="favorite">What is your favorite movie and why?</label>
+                <textarea id="favorite" name="favorite" class="favorite" maxlength="100"></textarea>
+                <div class="choices">
+                    <p>Are you in the mood for something new or a classic?</p>
+                    <button type="button" id="new">New</button>
+                    <button type="button" id="classic">Classic</button>
+                </div>
+                <label for="gener">Do you want to have fun or do you want something serious?</label>
+                <textarea id="seriousness" name="seriousness" class="seriousness" maxlength="100"></textarea>
+                <button type="submit" id="next-person">Next Person</button>
+                <button type="submit" id="get-movies" class="hidden">Get Movies</button>
+            </form>
+            <section id="movies-section" class="hidden">
+                <div>
+                    <h2 id="movie-title">Loading ...</h2>
+                    <img id="poster" src="./src/assets/test.png" class="hidden">
+                    <p id="overview"></p>
+                </div>
+                <button id="next-movie">Next Movies</button>
+            </section>
+
+        </main>
+        <script type="module" src="./src/index.js"></script>
+    </body>
+</html> 

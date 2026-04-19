@@ -1,0 +1,120 @@
+*, *::after, *::before{
+    box-sizing: border-box;
+}
+h1,h2,div{
+    margin:0;
+    padding:0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+body{
+    height: 100vh;
+    width:100vw;
+    max-width: 450px;
+    margin: auto;
+    color: white;
+}
+
+header{
+    height: 20%;
+    background-image: url(./assets/hero.jpg);
+    background-size: cover;
+    background-position:bottom;
+    display: flex;
+    justify-content: center;
+    align-items:end;
+    font-size: 1.75rem;
+}
+header>h1{
+    margin: 0 0 10px 0;
+}
+
+main{
+    background-color: #1028e4;
+    height: 80%;
+    padding:30px;
+    display: flex;
+    flex-direction: column;
+}
+
+form, section, section > div {
+    flex:1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 1em;
+    align-items: center;
+}
+section, section>div{
+    justify-content: flex-start;
+}
+form{
+    justify-content: center;
+}
+
+#form1{
+    gap:1.8em;
+}
+#form2{
+    gap:.5em;
+}
+
+#form2>textarea, #form2>div{
+    margin-bottom: 2em;
+}
+
+#form2>textarea{
+    height:6em;
+}
+
+form>textarea, form>input ,form>label, form>button, section>button, section>div, section>div>img{
+    width:100%;
+    font-size: 1.125rem;
+}
+form>input, form>button, form>textarea, section>button{
+    padding:.5em 1em;
+    border-radius: 10px;
+}
+form>input, form>button, section>button{
+    height: 10%;
+}
+
+#form1>input::placeholder{
+    color:lightgray;
+}
+
+form>button, section>button{
+    background-color:#C8B417;
+}
+
+.choices button {
+  padding: 10px 20px;
+  border: 1px solid #7180F6;
+  background: white;
+  color: #7180F6;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.choices button:active:not(.selected) {
+  background: #7180F6;
+  color: white;
+}
+.choices button.selected
+{
+    outline: 2px solid #C8B417;
+}
+
+#form1.hidden, #form2.hidden, #next-person.hidden, #get-movies.hidden, section.hidden, #poster{
+    display:none
+}
+
+
+
+/* 
+#1430fd
+#2f1b5a */

@@ -1,0 +1,16 @@
+{
+  "name": "W2Watchserver",
+  "description": "https://scrimba.com/fullstack-path-c0fullstack/~0453/s01mrv9ki3/head",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.1.40",
+    "@langchain/textsplitters": "^1.0.1",
+    "@supabase/supabase-js": "^2.38.2",
+    "cors": "^2.8.6",
+    "express.js": "^1.0.0",
+    "openai": "4.12.3"
+  },
+  "type": "module"
+}
