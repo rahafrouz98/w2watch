@@ -14,10 +14,10 @@ app.use(express.json());
 app.use(express.text());
 app.use(cors());
 // Serve static frontend
-app.use(express.static(path.join(process.cwd(), "dist")));
+app.use(express.static(path.join(process.cwd(), "client/dist")));
 // Catch-all route (important for SPA routing)
 app.get("*", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "dist", "index.html"));
+  res.sendFile(path.join(process.cwd(), "dist", "client/dist/index.html"));
 });
 
 app.post( "/vector", async(req,res)=>{
