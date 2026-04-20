@@ -3,7 +3,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   server: {
     proxy: {
-      "/start": "http://localhost:3000"
+      "/vector": "http://localhost:3000",
+      "/llm":"http://localhost:3000",
+      "/image": "http://localhost:3000"
     }
   }
 });

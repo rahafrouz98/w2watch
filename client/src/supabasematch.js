@@ -8,27 +8,29 @@ export class SupabaseMatching
     {
         this.supabase = createClient( SUPABASE_URL_MOVIE, SUPABASE_KEY_MOVIE)
     }
-    async findNearestMatch(embedding) 
+    async findNearestMatch(vectorList) 
     {
-        try
+        const movies=[]
+        for( let vector of vectorList)
         {
-            console.log(Array.isArray(embedding))
-            console.log(embedding.length)
-            const {data, error} = await this.supabase.rpc('match_documents', {
-                query_embedding: `[${embedding.join(",")}]`,
-                match_threshold: 0.4,
-                match_count: 1000
-                });
-            
-            if(error)
+            try
             {
-                throw error
+                const {data, error} = await this.supabase.rpc('match_documents', {
+                                            query_embedding: vector,
+                                            match_threshold: 0.40,
+                                            match_count: 4
+                                        });
+                if(error)
+                {
+                    throw error
+                }
+                movies.push(...data)
             }
-            return data[0].content;
+            catch(err)
+            {
+                console.log(err)
+            }
         }
-        catch(err)
-        {
-            console.log(err)
-        }
+        return movies;    
     }
 }

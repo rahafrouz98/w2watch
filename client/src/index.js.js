@@ -1,4 +1,5 @@
 import {SupabaseMatching} from "./supabasematch.js"
+import {renderForm2,updateType, renderMovie, flipPoster } from "./utils.js"
 const body=
 {
     number:1,
@@ -6,7 +7,9 @@ const body=
     content:[]
 }
 let person = 1;
-let mType= "";
+let release= "";
+let recommendedMovies=[];
+let nextMovie = [0];
 
 const supabaseMatching = new SupabaseMatching();
 
@@ -17,48 +20,60 @@ document.addEventListener("submit", async(e)=>{
     {
         const formData = new FormData(e.target)
         body["number"] = Number(formData.get("number"))
-        body["hour"]=formData.get("hour")
+        body["hour"]= formData.get("hour")=== "" ? "4 hours" : formData.get("hour")
         e.target.classList.add("hidden")
-        renderForm2()
+        renderForm2(person)
 
     }
     /*form 2  */
     else if(e.target.id==="form2")
     {
         const formData = new FormData(e.target)
-        const content= {"favorite":formData.get("favorite"), "movieType":mType, "seriousness":formData.get("seriousness")}
+        const content= `A ${release} movie, similar to ${formData.get("favorite")} which is ${formData.get("seriousness")}`
         body.content.push(content)
         let type= ""
         if (person <body.number-1)
         {
             person++
-            renderForm2()
+            renderForm2(person)
         }
         else if(person ===body.number-1)
         {
             document.getElementById("get-movies").classList.remove("hidden")
             document.getElementById("next-person").classList.add("hidden")
             person++
-            renderForm2()
+            renderForm2(person)
         }
         else if(person === body.number)
         {
             document.getElementById("form2").classList.add("hidden")
             document.getElementById("movies-section").classList.remove("hidden")
 
-            const res = await fetch("http://localhost:3000/start", {
+            const vectorRes = await fetch("/vector", {
                 method:"POST",
                 headers: 
                 {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(body)
+                body: JSON.stringify(body.content)
             })
-            const vector = await res.json()
+            const vectorData = await vectorRes.json()
+            const vectorList=vectorData.map(data=>data.embedding)
+            const movies = await supabaseMatching.findNearestMatch(vectorList)
+            const LLMRes = await fetch("/llm",{
+                method:"POST",
+                headers:
+                {
+                    'content-type':"application/json",
+                    "Accept":"application/json"
+                },
+                body: JSON.stringify({duration:body.hour, favorites:movies, type:release})
+            })
+            let response = await LLMRes.json();   
+            recommendedMovies= response.movies
+            renderMovie(nextMovie, recommendedMovies)
 
-            const foundMovies = await supabaseMatching.findNearestMatch(vector)
-             console.log(foundMovies)
         }
     }
 
@@ -66,38 +81,28 @@ document.addEventListener("submit", async(e)=>{
 document.getElementById("new").addEventListener("click", typeHandler)
 document.getElementById("classic").addEventListener("click", typeHandler)
 
-function renderForm2()
-{   
-    document.getElementById("person-number").textContent=person
-    document.getElementById("form2").classList.remove("hidden")
-    document.getElementById("form2").reset()
-    document.getElementById("new").classList.remove("selected")
-    document.getElementById("classic").classList.remove("selected")
-    updateType()
-}
-
-function typeHandler(e)
+export function typeHandler(e)
 {
     e.target.classList.toggle("selected")
-    updateType()
+    release= updateType()
 }
-function updateType()
-{
-    const isClassic = document.getElementById("classic").classList.contains("selected")
-    const isNew = document.getElementById("new").classList.contains("selected")
-    if((isClassic&&isNew)||(!isClassic&&!isNew))
+
+document.getElementById("next-movie").addEventListener("click",(e)=>{
+    flipPoster("")
+    renderMovie(nextMovie, recommendedMovies)
+    if(nextMovie[0]===recommendedMovies.length)
     {
-        mType=""
+        e.target.classList.add("hidden")
+        document.getElementById("restart").classList.remove("hidden")
     }
-    else if(isClassic)
-    {
-        mType="classic"
-    }
-    else
-    {
-        mType="new"
-    }
-}
+    
+})
+
+document.getElementById("restart").addEventListener("click",(e)=>{
+    location.reload()
+    
+})
+
 
 
 

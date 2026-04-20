@@ -11,33 +11,38 @@
         </header>
         <main>
             <form id="form1">
-                <input type="number" name="number" id="number" placeholder="How many people?" aria-label="type how many people are watching the movie" max="8" value ="1">
+                <input type="number" name="number" id="number" placeholder="How many people?" aria-label="type how many people are watching the movie" max="5" value ="1">
                 <input type="text" name="hour" id="hour" placeholder="How much time do you have?" maxlength="20" aria-label="type how much time do you have to watch the movie">
                 <button type="submit" id="start">Start</button>
             </form>
             <form id="form2" class="hidden">
                 <h2 id="person-number"></h2>
                 <label for="favorite">What is your favorite movie and why?</label>
-                <textarea id="favorite" name="favorite" class="favorite" maxlength="100"></textarea>
+                <textarea id="favorite" name="favorite" class="favorite" maxlength="200"></textarea>
                 <div class="choices">
                     <p>Are you in the mood for something new or a classic?</p>
                     <button type="button" id="new">New</button>
                     <button type="button" id="classic">Classic</button>
                 </div>
                 <label for="gener">Do you want to have fun or do you want something serious?</label>
-                <textarea id="seriousness" name="seriousness" class="seriousness" maxlength="100"></textarea>
+                <textarea id="seriousness" name="seriousness" class="seriousness" maxlength="150"></textarea>
                 <button type="submit" id="next-person">Next Person</button>
                 <button type="submit" id="get-movies" class="hidden">Get Movies</button>
             </form>
             <section id="movies-section" class="hidden">
+                <h2 id="movie-title">Loading ...</h2>
                 <div>
-                    <h2 id="movie-title">Loading ...</h2>
-                    <img id="poster" src="./src/assets/test.png" class="hidden">
+                    <img id="poster" src="" class="hidden">
+                    <p id="na-poster" class="hidden"> Poster is not available</p>
                     <p id="overview"></p>
+                    <p id="duration"></p>
+                    <p id="stream"></p>
                 </div>
-                <button id="next-movie">Next Movies</button>
+                <button id="next-movie" class="hidden">Next Movies</button>
+                <button id="restart" class="hidden">Restart</button>
             </section>
-
+            <footer><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" 
+                alt="This product uses the TMDb API but is not endorsed or certified by TMDb."></footer>
         </main>
         <script type="module" src="./src/index.js"></script>
     </body>

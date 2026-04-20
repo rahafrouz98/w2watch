@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "movies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "overview": { "type": "string" },
+          "duration": { "type": "string" }
+        },
+        "required": ["title", "overview", "duration"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["movies"],
+  "additionalProperties": false
+}

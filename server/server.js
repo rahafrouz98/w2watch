@@ -1,27 +1,60 @@
 import express from "express"
 import cors from "cors"
 import path from "path"
-import { fileURLToPath } from "url";
-import { Embedding } from "./lib/embedding.js";
+import { OpenAIEngine } from "./lib/openaiengine.js";
+import {TMDBEngine} from "./lib/tmdb-image.js"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const embedding = new Embedding();
+const openAiEngine = new OpenAIEngine();
+const tmdbEngine = new TMDBEngine();
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use(express.text());
 app.use(cors());
-app.use(express.static(path.join(__dirname, "../client")));
+// Serve static frontend
+app.use(express.static(path.join(process.cwd(), "dist")));
+// Catch-all route (important for SPA routing)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(process.cwd(), "dist", "index.html"));
+});
 
-app.get( "/", (req,res)=>{
-    res.sendFile(path.join(__dirname, "../client/index.html"));
+app.post( "/vector", async(req,res)=>{
+    try{
+            const vector=await openAiEngine.contentEmbedding(req.body)
+            res.json(vector);
+    }
+    catch (err)
+    {
+        console.log("error from OpenAi Engine, embedding:")
+        console.log(err)
+    }
+
 })
-app.post( "/start", async(req,res)=>{
-    const vector=await embedding.contentEmbedding(req.body)
-    res.json(vector);
+app.post( "/llm", async(req,res)=>{
+    try
+    {
+        const llmComment = await openAiEngine.llmAdvise(req.body)
+        res.send(llmComment)
+    }
+    catch(err)
+    {
+        console.log("error from OpenAi Engine, LLM:")
+        console.log(err)
+    }
+})
+app.post( "/image", async(req,res)=>{
+    try
+    {
+        const imageUrl = await tmdbEngine.getImage(req.body)
+        res.send(imageUrl)
+    }
+    catch
+    {
+        console.log("error from TMDB engine, :")
+        console.log(err)
+    }
 })
 
 app.listen(PORT, ()=>{

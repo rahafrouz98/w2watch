@@ -3,7 +3,7 @@ import fs from "node:fs"
 
 const supabaseClient = createClient( process.env.SUPABASE_URL_MOVIE, process.env.SUPABASE_KEY_MOVIE)
 
-const data = fs.readFileSync("../../data/table-p.json", "utf-8")
+const data = fs.readFileSync("../../data/table200.json", "utf-8")
 const table = JSON.parse(data)
 let step=100;
 

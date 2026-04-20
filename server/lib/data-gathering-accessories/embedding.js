@@ -2,11 +2,11 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import OpenAI from "openai";
 import fs from "fs"
 
-const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 500, chunkOverlap: 0, separators:[`\n\n`] })
+const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 200, chunkOverlap: 20})
 const openai = new OpenAI({apiKey:process.env.AI_KEY});
 
 
-const data = fs.readFileSync('../../data/comment.txt', 'utf8');
+const data = fs.readFileSync('../../data/movies.txt', 'utf8');
 const texts = await splitter.createDocuments([data])
 console.log(texts)
 let table=[]
@@ -21,7 +21,7 @@ for(let text of texts)
     table.push({content: text.pageContent, embedding:embedding["data"]["0"]["embedding"]})
 }
 const json = JSON.stringify(table, null, 2);
-fs.writeFileSync("../../data/table-comment.json", json, "utf-8");
+fs.writeFileSync("../../data/table200.json", json, "utf-8");
 
 
 
