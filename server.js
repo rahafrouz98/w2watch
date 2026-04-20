@@ -13,12 +13,9 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.text());
 app.use(cors());
-// Serve static frontend
-const frontendPath = path.join(process.cwd(), "client/dist");
-app.use(express.static(frontendPath));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-});
+
+const __dirname = process.cwd();
+app.use(express.static(path.join(__dirname, "client/dist")));
 
 app.post( "/vector", async(req,res)=>{
     try{
@@ -56,6 +53,10 @@ app.post( "/image", async(req,res)=>{
         console.log(err)
     }
 })
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/dist/index.html"));
+});
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on http://localhost:${PORT}`)
