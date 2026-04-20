@@ -8,7 +8,7 @@ const openAiEngine = new OpenAIEngine();
 const tmdbEngine = new TMDBEngine();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.text());
@@ -47,7 +47,7 @@ app.post( "/image", async(req,res)=>{
         const imageUrl = await tmdbEngine.getImage(req.body)
         res.send(imageUrl)
     }
-    catch
+    catch(err)
     {
         console.log("error from TMDB engine, :")
         console.log(err)
